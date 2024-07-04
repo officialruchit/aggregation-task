@@ -1,7 +1,7 @@
 const Listing = require("../models/listingModel");
 
 exports.listingData = async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
+  const page = parseInt(req?.query?.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   try {
     const totalData = await Listing.countDocuments();
@@ -37,7 +37,9 @@ exports.searchByName = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const name = req.query.name;
-
+  const date = new Date();
+  const day = date.getDate();
+  console.log(day);
   try {
     const totalData = await Listing.countDocuments({ name: { $regex: name } });
     const totalpage = Math.ceil(totalData / limit);
