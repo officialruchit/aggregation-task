@@ -14,7 +14,19 @@ exports.listingData = async (req, res) => {
         },
       },
       {
-        $sort: { _id: 1, count: 1 },
+        $addFields: {
+          propertyType: "$_id",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          propertyType: 1,
+          count: 1,
+        },
+      },
+      {
+        $sort: { property_type: 1, count: 1 },
       },
       {
         $limit: limit,
@@ -29,7 +41,6 @@ exports.listingData = async (req, res) => {
       results,
     });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Failed to fetch property types" });
   }
 };
@@ -39,7 +50,7 @@ exports.searchByName = async (req, res) => {
   const name = req.query.name;
   const date = new Date();
   const day = date.getDate();
-  console.log(day);
+
   try {
     const totalData = await Listing.countDocuments({ name: { $regex: name } });
     const totalpage = Math.ceil(totalData / limit);
@@ -63,7 +74,6 @@ exports.searchByName = async (req, res) => {
       results,
     });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Failed to fetch listings by name" });
   }
 };

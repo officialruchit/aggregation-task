@@ -151,7 +151,6 @@ exports.calculateday = async (req, res) => {
       results,
     });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: "Failed to fetch listings" });
   }
 };
